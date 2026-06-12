@@ -33,17 +33,21 @@ export class SSHSessionDO {
   }
 
   private waitForCredentials(ws: WebSocket): void {
+    console.log('Waiting for credentials...');
     const timeout = setTimeout(() => {
+      console.log('Credentials timeout');
       ws.send(JSON.stringify({ type: 'error', message: 'Connection timeout' }));
       ws.close(1011, 'Timeout');
     }, 10000);
 
     const handler = (event: MessageEvent) => {
+      console.log('Received message in waitForCredentials');
       clearTimeout(timeout);
       ws.removeEventListener('message', handler);
       
       try {
         const config = JSON.parse(event.data as string) as SSHConnectionConfig;
+        console.log('Parsed config:', config.host, config.port, config.username);
         
         if (!config.host || !config.username || !config.password) {
           ws.send(JSON.stringify({ type: 'error', message: 'Missing credentials' }));
@@ -53,6 +57,7 @@ export class SSHSessionDO {
 
         this.initSSHSession(ws, config);
       } catch (e) {
+        console.error('Parse error:', e);
         ws.send(JSON.stringify({ type: 'error', message: 'Invalid credentials format' }));
         ws.close(1011, 'Invalid format');
       }
