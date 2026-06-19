@@ -174,8 +174,6 @@ npm run dev
 
 ## Star History
 
-## Star History
-
 <a href="https://www.star-history.com/?type=date&repos=newbietan%2FCloudSSH">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=newbietan/CloudSSH&type=date&theme=dark&legend=top-left" />
