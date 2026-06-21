@@ -169,7 +169,8 @@ export class SSHSessionDO {
       }
 
       const { connect } = await import('cloudflare:sockets');
-      const socket = connect({ hostname: config.host, port: config.port });
+      const hostname = config.host.includes(':') ? `[${config.host}]` : config.host;
+      const socket = connect({ hostname, port: config.port });
 
       await socket.opened;
 

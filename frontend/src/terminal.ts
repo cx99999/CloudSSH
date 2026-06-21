@@ -131,7 +131,6 @@ export class SSHTerminal {
           privateKey: config.privateKey,
         }));
         
-        this.reconnectAttempts = 0;
         this.startHeartbeat();
         resolve();
       };
@@ -160,7 +159,6 @@ export class SSHTerminal {
 
     ws.onopen = () => {
       this.terminal.writeln('\x1b[32m[+] WebSocket connected, authenticating...\x1b[0m');
-      this.reconnectAttempts = 0;
       this.startHeartbeat();
     };
 
@@ -188,6 +186,7 @@ export class SSHTerminal {
             case 'status':
               this.terminal.writeln(`\x1b[32m[*] ${msg.message}\x1b[0m`);
               if (msg.message === '认证成功') {
+                this.reconnectAttempts = 0;
                 const statusText = document.getElementById('status-text');
                 if (statusText) statusText.innerHTML = '<span class="w-2 h-2 bg-[#4af626] inline-block animate-pulse"></span> STATUS: ONLINE';
               }
